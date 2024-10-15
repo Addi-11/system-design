@@ -1,7 +1,7 @@
 # Sytem Design Excercises
 
 ## Part-1
-1. Implement a simple connection pool using Bounded Blocking Queue
+1. [Implement a simple connection pool using Bounded Blocking Queue](./connection-pool/)
 2. Implement Database Sharding and Routing (from API server)
 3. Setup Read-replica from a MySQL locally
 4. Implement fair multi-threaded program
