@@ -7,6 +7,8 @@ The `getUser` function determines the appropiate shard based on the userID
 <br>
 4. **Alternative**: Instead of handling routing at the application layer, we could be using a Proxy Database. A proxy DB handles the routing and scaling behind the scenes, and automatically distribute traffic across different shards.
 
+![alt text](../images/sharding.png)
+
 #### Reference
 - [Sample Implementation of Gin API](../golang-prerequisites/gin/main.go)
 - [Go-Gin developer Guide](https://pkg.go.dev/github.com/gin-gonic/gin#section-readme)
