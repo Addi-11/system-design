@@ -42,6 +42,6 @@ Pool time for 1000 threads: 278.3791ms
 #### Reference Links:
 - [Accessing mysql DB using GO](https://go.dev/doc/tutorial/database-access)
 - [Concurrency in GO](https://go.dev/tour/concurrency/9)
-- [Thread Safe Queue Implementation](../thread-safe-queue/)
-- [Blocking Queue Naive Implementation](../blocking-queue/)
-- [Blocking Queue Implementation using channels](../blocking-queue-channel/)
+- [Thread Safe Queue Implementation](../02-thread-safe-queue/)
+- [Blocking Queue Naive Implementation](../03-blocking-queue/main.go)
+- [Blocking Queue Implementation using channels](../04-blocking-queue-channel/main.go)

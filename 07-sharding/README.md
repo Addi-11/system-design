@@ -10,5 +10,5 @@ The `getUser` function determines the appropiate shard based on the userID
 ![alt text](../images/sharding.png)
 
 #### Reference
-- [Sample Implementation of Gin API](../golang-prerequisites/gin/main.go)
+- [Sample Implementation of Gin API](../00-golang-prerequisites/04-gin/main.go)
 - [Go-Gin developer Guide](https://pkg.go.dev/github.com/gin-gonic/gin#section-readme)
