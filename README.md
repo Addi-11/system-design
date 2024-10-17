@@ -3,7 +3,7 @@
 ## Part-1
 1. [Implement a simple connection pool using Bounded Blocking Queue](./05-connection-pool/)
 2. [Implement Database Sharding and Routing (from API server)](./07-sharding/)
-3. Setup Read-replica from a MySQL locally
+3. [Setup Read-replica from a MySQL locally](./12-mysql-read-replica/)
 4. [Implement fair multi-threaded program](./08-multi-thread-program/)
 5. [Implement server-sent events](./09-basic-server-sent-events/)
 5. [Implement server-sent events using Message Broker](./10-broker-server-sent-event/)
