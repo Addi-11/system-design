@@ -19,9 +19,9 @@
 
 ## Week-2
 1. [Implement Airline Check-in System.](./14-airline-checkin-system/)
-1. Try to hit deadlock in database by cn top of MySQL.
-1. Implement simple sharding with areating multiple sessions and inducing circular dependency
-1. Implement a toy KV store o hash or range based routing strategy in above KV store.
+1. Hit deadlock in database by cn top of MySQL.
+1. Implement a toy KV store on top of MySQL.
+1. Implement simple sharding with a hash or range based routing strategy in above KV store.
 1. Implement flag driven consistent reads.
 1. Implement Distributed Transactions using 2PC.
 1. Ingest data in Neo4j and try paginating it.
