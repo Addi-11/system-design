@@ -19,10 +19,6 @@ type User struct{
 	Seat string
 }
 
-type Airline struct{
-	Users []*User
-}
-
 func init(){
 	dbUser := os.Getenv("DBUSER")
 	dbPass := os.Getenv("DBPASS")
