@@ -7,6 +7,7 @@
 4. [Implement fair multi-threaded program](./08-multi-thread-program/)
 5. [Implement server-sent events](./09-basic-server-sent-events/)
 5. [Implement server-sent events using Message Broker](./10-broker-server-sent-event/)
+5. Implement server-sent events on React Components on a web-page.
 6. Setup RabbitMQ and Kafka locally.Write producer and consumer for them.
     1. [Setup RabbitMQ](./13A-rabbitmq/)
     2. [Setup Kafka](./13B-kafka/)
@@ -17,10 +18,10 @@
     3. Define API that client can do to long poll the status
 
 ## Week-2
-1. Implement Airline Check-in System.
-1. Try to hit deadlock in database by creating multiple sessions and inducing circular dependency
-1. Implement a toy KV store on top of MySQL.
-1. Implement simple sharding with a hash or range based routing strategy in above KV store.
+1. [Implement Airline Check-in System.](./14-airline-checkin-system/)
+1. Try to hit deadlock in database by cn top of MySQL.
+1. Implement simple sharding with areating multiple sessions and inducing circular dependency
+1. Implement a toy KV store o hash or range based routing strategy in above KV store.
 1. Implement flag driven consistent reads.
 1. Implement Distributed Transactions using 2PC.
 1. Ingest data in Neo4j and try paginating it.
