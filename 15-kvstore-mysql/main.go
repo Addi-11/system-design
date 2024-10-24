@@ -1,11 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
 	"database/sql"
-	"os"
+	"fmt"
 	"log"
+	"os"
 	"time"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -40,7 +42,7 @@ func put(key string, value string, ttl time.Duration) error{
 
 func get(key string) (string, error){
 	var value string
-	err := DB.QueryRow("SELECT * FROM kv_store WHERE key=? AND expired_at > NOW()", key).Scan(&value)
+	err := DB.QueryRow("SELECT value FROM kv_store WHERE `key` = ? AND expired_at > NOW()", key).Scan(&value)
 	if err != nil{
 		return "", err
 	}
@@ -48,17 +50,112 @@ func get(key string) (string, error){
 }
 
 func del(key string) error{
-	_, err := DB.Exec("UPDATE kv_store SET expired_at = -1 WHERE key = ? AND expired_at >= NOW()", key)
+	_, err := DB.Exec("UPDATE kv_store SET expired_at = '1970-01-01' WHERE `key` = ? AND expired_at > NOW()", key)
 	return err
 }
 
 func ttl() error{
-	_, err := DB.Exec("DELETE FROM kv_store WHERE expired_at <= NOW()")
+	_, err := DB.Exec("DELETE FROM kv_store WHERE expired_at <= NOW() LIMIT 1000")
 	return err
 }
 
+func cli(){
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Println("Enter command: ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		commands := strings.Split(input, " ")
+
+		switch commands[0]{
+
+		case "put":
+			if len(commands) != 4 {
+				fmt.Println("Usage: put <key> <value> <ttl_in_seconds>")
+				continue
+			}
+			key := commands[1]
+			value := commands[2]
+			ttl, err := time.ParseDuration(commands[3] + "s")
+			if err != nil {
+				fmt.Println("Invalid TTL format. Use an integer for seconds.")
+				continue
+			}
+			err = put(key, value, ttl)
+			if err != nil {
+				fmt.Println("Error putting value:", err)
+			} else {
+				fmt.Println("Put operation successful")
+			}
+
+		case "get":
+			if len(commands) != 2 {
+				fmt.Println("Usage: get <key>")
+				continue
+			}
+			key := commands[1]
+			value, err := get(key)
+			if err != nil {
+				if err == sql.ErrNoRows {
+					fmt.Println("Key not found or expired")
+				} else {
+					fmt.Println("Error getting value:", err)
+				}
+			} else {
+				fmt.Println("Value:", value)
+			}
+
+		
+		case "del":
+			if len(commands) != 2 {
+				fmt.Println("Usage: del <key>")
+				continue
+			}
+			key := commands[1]
+			err := del(key)
+			if err != nil {
+				fmt.Println("Error deleting key:", err)
+			} else {
+				fmt.Println("Delete operation successful")
+			}
+
+		case "ttl":
+			err := ttl()
+			if err != nil {
+				fmt.Println("Error running TTL:", err)
+			} else {
+				fmt.Println("TTL cleanup successful")
+			}
+
+		case "exit":
+			fmt.Println("Exiting...")
+			return
+
+		default:
+			fmt.Println("Unknown command. Supported commands: put, get, del, ttl, exit")
+		}
+	}
+}
+
+func ttlCleanupRoutine() {
+	ticker := time.NewTicker(120 * time.Second) // run every 2 min
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			err := ttl()
+			if err != nil {
+				fmt.Println("Error running automatic TTL cleanup:", err)
+			} else {
+				fmt.Println("Automatic TTL cleanup successful")
+			}
+		}
+	}
+}
+
+
 func main(){
-	put("123", "123abcd", time.Second *20)
-	put("24", "24shimla", time.Second *120)
-	put("67", "67kolkata", time.Second *220)
+	go ttlCleanupRoutine()
+	cli()
 }
