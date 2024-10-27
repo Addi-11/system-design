@@ -11,7 +11,7 @@
 6. Setup RabbitMQ and Kafka locally.Write producer and consumer for them.
     1. [Setup RabbitMQ](./13A-rabbitmq/)
     2. [Setup Kafka](./13B-kafka/)
-7. Implement real-time chat using socket IO: [Reference](https://github.com/socketio/socket.io-chat-platform)
+7. Implement real-time chat using socket IO: Slack-Realtime Text Chat[Reference](https://github.com/socketio/socket.io-chat-platform)
 8. Implement Short Polling and Long Polling
     1. Mock EC2 creation with sleep
     2. Define API that client can do to short poll the status

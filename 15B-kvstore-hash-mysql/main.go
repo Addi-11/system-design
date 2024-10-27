@@ -53,27 +53,38 @@ func getShard(key string) (*sql.DB, int){
 }
 
 func put(key string, value string, ttl time.Duration) {
-	db, idx := getShard(key)
-	table := fmt.Sprintf("kv_store_shard%d", idx)
-	expiry := time.Now().Add(ttl)
+    db, idx := getShard(key)
+    table := fmt.Sprintf("kv_store_shard%d", idx)
+    expiry := time.Now().Add(ttl)
 
-	_, err := db.Exec(fmt.Sprintf("REPLACE INTO %s VALUES (?, ?, ?)", table), key, value, expiry)
-	failOnError(err, "Error putting value")
+	formattedExpiry := expiry.Format("2006-01-02 15:04:05") // format it before storing - else timezone may change
+
+    _, err := db.Exec(fmt.Sprintf("REPLACE INTO %s (`key`, `value`, `expired_at`) VALUES (?, ?, ?)", table), key, value, formattedExpiry)
+    failOnError(err, "Error putting value")
 }
 
-func get(key string) string{
+
+
+
+func get(key string) string {
 	db, idx := getShard(key)
 	table := fmt.Sprintf("kv_store_shard%d", idx)
 	var value string
+	var expiredAt time.Time
 
 	err := db.QueryRow(fmt.Sprintf("SELECT value from %s WHERE `key` = ? AND expired_at > NOW()", table), key).Scan(&value)
+
 	if err == sql.ErrNoRows {
-        fmt.Printf("Key not found or expired: %s\n", key)
-        return ""
+		fmt.Printf("Key not found or expired: %s\n", key)
+		return ""
+	} else if err != nil {
+		log.Fatalf("Get Failed: %v\n", err)
 	}
-	failOnError(err, "Get Failed.")
+
+	fmt.Printf("Retrieved key '%s' with value '%s', expires at %s\n", key, value, expiredAt)
 	return value
 }
+
 
 func del(key string){
 	db, idx := getShard(key)
@@ -96,7 +107,7 @@ func main(){
 	for i := 0; i < num; i++{
 		key := fmt.Sprintf("key%d", i)
 		value := fmt.Sprintf("value%d", rand.Intn(100))
-		ttl := time.Duration(rand.Intn(10))*100* time.Second
+		ttl := time.Duration(3+rand.Intn(10)) * time.Minute
 
 		// Put into table
 		put(key, value, ttl)
