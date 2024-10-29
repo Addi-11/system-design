@@ -12,11 +12,8 @@
     1. [Setup RabbitMQ](./13A-rabbitmq/)
     2. [Setup Kafka](./13B-kafka/)
 7. Implement real-time chat using socket IO: Slack-Realtime Text Chat [Reference](https://github.com/socketio/socket.io-chat-platform)
-8. [Implement Short Polling and Long Polling](./16-long-short-polling/)
-    1. Mock EC2 creation with sleep
-    2. Define API that client can do to short poll the status
-    3. Define API that client can do to long poll the status
-
+8. [Mock EC2 creation & implement Short Polling and Long Polling](./16-long-short-polling/)
+ 
 ## Week-2
 1. [Implement Airline Check-in System](./14-airline-checkin-system/)
 1. Hit deadlock in database by cn top of MySQL.
@@ -37,15 +34,8 @@
     1. Implement and test recovery by resuming from the safest value
 1. Implement the "Amazon's Way" of central ID generation service
 1. Implement ths sturcutre of MongoDB Object ID
-1. Benchmark the impact of UUID on relational database as Primary Key
-    1. Create two tables with identical schema
-        1. ID (4 byte auto_inc int), Age (4 byte int)
-        1. ID (16 byte varchar). Age (4 byte int)
-    1. Insert 1 million rows on each table and measure the time taken
-    1. Create the index on age column and measure the size of the index
-1. Benchmark MySQL's upsert using
-    1. ON DUPLICATE KEY UPDATE
-    1. REPLACE INTO
+1. [Benchmark the impact of UUID on relational database as Primary Key](./18-benchmark-primarykey/)
+1. [Benchmark MySQL's UPSERT using `ON DUPLICATE KEY UPDATE` and `REPLACE INTO`](./17-benchmark-mysql-upsert/)
 1. Implement Flickr's Odd-Even based ID generation
 1. Implement Snowflake on
     1. API, and
@@ -61,4 +51,4 @@
     1. Dump data from one shard and load it on another
         1. use mysqldump utility for this
         1. Implement this by iterating over rows to understand how slow and complex the process would be
-1. Implement Distributed Transactions from the video resource shared above
+1. Implement Distributed Transactions
