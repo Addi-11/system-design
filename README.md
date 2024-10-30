@@ -26,12 +26,9 @@
 1. Implement Message Broadcast across servers using Star Topology leveraging Redis PubSub.
 
 ## Week-3
+1. Implement a load-balancer
 1. Implement a simple blogging application where you shard by user id; and try to provide a unique ID to each blog. The idea is to understand the need to ID generation when database is sharded.
-1. Build a simple atomically incrementing integer ID
-    1. Atomically increment counter and persist it on disk every time
-    1. Persist the counter every n iterations to the disk
-    1. Vary the n to understand how the throughput varies
-    1. Implement and test recovery by resuming from the safest value
+1. [Build a simple atomically incrementing integer ID](./19-atomic-int-ID/)
 1. Implement the "Amazon's Way" of central ID generation service
 1. Implement ths sturcutre of MongoDB Object ID
 1. [Benchmark the impact of UUID on relational database as Primary Key](./18-benchmark-primarykey/)
