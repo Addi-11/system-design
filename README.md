@@ -26,7 +26,7 @@
 1. Implement Message Broadcast across servers using Star Topology leveraging Redis PubSub.
 
 ## Week-3
-1. Implement a load-balancer
+1. [Implement a load-balancer](./20-load-balancer/)
 1. Implement a simple blogging application where you shard by user id; and try to provide a unique ID to each blog. The idea is to understand the need to ID generation when database is sharded.
 1. [Build a simple atomically incrementing integer ID](./19-atomic-int-ID/)
 1. Implement the "Amazon's Way" of central ID generation service
@@ -49,3 +49,43 @@
         1. use mysqldump utility for this
         1. Implement this by iterating over rows to understand how slow and complex the process would be
 1. Implement Distributed Transactions
+
+## Week-4
+
+1. Sign-up on Cloudflare, Akamai, or BunnyCDN and explore their features like Origin Configuration, TTL, image Optimization
+1. Configure a website as origin for CDN and see how CDN improves the latency
+1. Pass query paramters to resize and transform the impage served via CDN
+1. Try invlidating a CDN path and measure the time it takes to reflect
+1. Implement a Toy CDN
+1. Implement pre-signed URL based upload on S3
+1. Mimick CDN Failover
+    1. Configure multiple properties on same CDN under different CDN hostnames
+    1. Configure same website as origin for it.
+    1. For a given request, confire that 80% go to origin 1 while 20% goes to origin 2
+    1. Do this by creating CDN urls in the backend response
+1. Configure CDN to serve Popular Searches JSON response
+1. Implement JWT based auhthentication
+1. Build GitHub like OG image and server it via CDN
+    1. Key learning: generating images in backend server and putting it behind a CDN
+1. Measure the impact of denormalization
+    1. Define a user collection in MongoDB with blogs as its attribute
+    1. Store blogs object in the user document demonting all blogs that a person wrote.
+    1. Store the entire object intead of reference.
+    1. Now benchmark and find out how slow the response times gets as we increase the number of elements in the blogs array
+1. Implement Lazy Loading of images on frontend
+1. Implement 5 approaches to count post per hashtag
+    1. Naive (count++) for every event
+    1. Naive batching (batch on server and then write to database)
+    1. Efficient batching with minimizing stop-the-world usng deep-copy
+    1. Efficient batching with minimizing stop-the-world using two-maps
+    1. Kafka adapter pattern to re-ingest the post hashtags partitioned by hashtag
+        1. Measure the number of writes on the database in each of the above approaches
+1. Populate on_msg_event while using websocket.
+    1. Try to identify when the connection breaks and use that opportunity to write event to Kafka
+1. Configure Redis in cluster mode and figure out how data is distrubuted
+1. Implement newly unread message indicator on database
+    1. Compute on the fly
+    1. Creates messages table with 1 million rows
+    1. Add one indexes for each column part of the where clause that is queried and measure the time taken
+    1. Compute with mentioned composite indexes, and measure the performance
+    1. Re-arrange the columns and mesure the performance impact
