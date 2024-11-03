@@ -30,6 +30,7 @@ type Packet struct {
 	FoodID     int
 	OrderID    sql.NullString
 	IsReserved bool
+	PacketName string
 }
 
 func reserveFood(foodID int) (*Packet, error) {
@@ -78,9 +79,16 @@ func bookFood(orderID string, foodID int) (*Packet, error) {
 	if err != nil {
 		return nil, err
 	}
+	// get food packet name
+	var packetName string
+	row := txn.QueryRow(`SELECT name from foods WHERE id = ?`,foodID)
+	err = row.Scan(&packetName)
+	if err != nil{
+		return nil, errors.New("food item with not found with id")
+	}
 
 	// Select the first reserved food packet
-	row := txn.QueryRow(`
+	row = txn.QueryRow(`
 		SELECT id, food_id, order_id, is_reserved FROM packets
 		WHERE food_id = ? AND is_reserved = true AND order_id IS NULL
 		LIMIT 1
@@ -96,6 +104,7 @@ func bookFood(orderID string, foodID int) (*Packet, error) {
 		txn.Rollback()
 		return nil, err
 	}
+	foodPacket.PacketName = packetName
 
 	_, err = txn.Exec(`
 		UPDATE packets SET is_reserved = false, order_id = ?
@@ -129,6 +138,7 @@ type BookFoodRequest struct {
 type BookFoodResponse struct {
 	PacketID string `json:"packet_id"`
 	OrderID  string `json:"order_id"`
+	PacketName string `json:"packet_name"`
 }
 
 func main() {
@@ -177,7 +187,7 @@ func main() {
 			c.JSON(http.StatusConflict, gin.H{"error": "order not placed: could not assign food to the order"})
 			return
 		}
-		c.JSON(http.StatusOK, BookFoodResponse{PacketID: foodPacket.ID, OrderID: req.OrderID})
+		c.JSON(http.StatusOK, BookFoodResponse{PacketID: foodPacket.ID, OrderID: req.OrderID, PacketName: foodPacket.PacketName})
 	})
 
 	// Start server

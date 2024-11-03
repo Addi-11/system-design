@@ -1,12 +1,46 @@
-## Distributed Transactions
+## Implementing Zomato's Ordering service
+Distributed Transactions using 2 phase commit protocols.
 [Reference](https://www.youtube.com/watch?v=oMhESvU87jM)
+
+```
+                    +-----------------+
+                    |     User        |
+                    +-----------------+
+                              |
+                              v
+                    +-----------------+
+                    |  Order Service  |
+                    +-----------------+
+                         /       \
+                        v         v
+            +----------------+  +----------------------+
+            |  Food Service  |  |Delivery Agent Service|
+            +----------------+  +----------------------+
+```
 
 #### Two Phase Commit
 Spilt the flow into 2 phases:
 1. Prepare - Reserve
 2. Commit - Assign
+```
+orders          store           delivery
+  |               |                 |   
+  |reserve food   |                 |   
+  |-------------->|@timer           |   
+  |               |                 |   
+  |reserve agent  |                 |   
+  |---------------|---------------->|@timer
+  |               |                 |   
+  |assign food    |                 |   
+  |-------------->|                 |   
+  |               |                 |   
+  |assign agent   |                 |   
+  |---------------|---------------->|
+  |               |                 |
 
-#### DB Schema
+```
+
+#### Database Schema
 ```
 +------------------+
 | Tables_in_zomato |
@@ -29,9 +63,9 @@ agents                           foods                      packets
 ```
 
 
-1. Reserve Food :
+- Reserve Food :
 ```
-SELECT * FROM packets
+SELECT id FROM packets
 WHERE is_reserved is false AND food_id=? AND order_id is NULL
 LIMIT 1
 FOR UPDATE
@@ -40,8 +74,20 @@ FOR UPDATE
 UPDATE packets SET is_reserved = true
 WHERE id = ?
 ```
-update 
-2. Reserve Agent :
+
+- Assign/Book Food :
+```
+SELECT id FROM packets
+WHERE food_id = ? AND is_reserved = true AND order_id IS NULL
+LIMIT 1
+FOR UPDATE
+```
+```
+UPDATE packets SET is_reserved = false, order_id = ?
+WHERE id = ?
+```
+
+- Reserve Agent :
 ```
 SELECT id FROM agents
 WHERE is_reserved is false AND order_id is NULL
@@ -52,7 +98,19 @@ FOR UPDATE
 UPDATE agents SET is_reserved = true
 WHERE id = ?
 ```
-3. Assign Food :
-4. Assign Agent : 
 
-![alt text](image.png)
+- Assign/Book Agent :
+```
+SELECT id FROM agents
+WHERE is_reserved = true AND order_id IS NULL
+LIMIT 1
+FOR UPDATE
+```
+```
+UPDATE agents SET is_reserved = false, order_id = ?
+WHERE id = ?
+```
+
+#### Output
+![alt text](../images/zomato-servers.png)
+![alt text](../images/zomato-outputdb.png)

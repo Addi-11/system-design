@@ -15,6 +15,8 @@ import (
 
 type Order struct{
 	ID string
+	PacketName string
+	AgentName string
 }
 
 func PlaceOrder(foodID int) (*Order, error){
@@ -48,6 +50,14 @@ func PlaceOrder(foodID int) (*Order, error){
 	if err != nil || resp3.StatusCode != 200 {
 		return nil, errors.New("could not assign food to the order")
 	}
+	defer resp3.Body.Close()
+	// Parse food name from the book response
+	var packetResponse struct {
+		PacketName string `json:"packet_name"`
+	}
+	if err := json.NewDecoder(resp3.Body).Decode(&packetResponse); err != nil {
+		return nil, errors.New("failed to get packet name")
+	}
 
 	// book agent
 	body, _ = json.Marshal(map[string]interface{}{
@@ -58,8 +68,16 @@ func PlaceOrder(foodID int) (*Order, error){
 	if err != nil || resp4.StatusCode != 200 {
 		return nil, errors.New("could not assign delivery agent to the order")
 	}
+	defer resp4.Body.Close()
+	// Parse agent name from the book response
+	var agentResponse struct {
+		AgentName string `json:"agent_name"`
+	}
+	if err := json.NewDecoder(resp4.Body).Decode(&agentResponse); err != nil {
+		return nil, errors.New("failed to get delivery agent name")
+	}
 
-	return &Order{ID: orderID}, nil
+	return &Order{ID: orderID, PacketName: packetResponse.PacketName, AgentName: agentResponse.AgentName}, nil
 }
 
 func main(){
@@ -70,11 +88,11 @@ func main(){
 		go func() {
 			defer wg.Done()
 			food_id := rand.Intn(2)+1 // randomly choose burger or pizza to order
-			order_id, err := PlaceOrder(food_id)
+			order, err := PlaceOrder(food_id)
 			if err != nil{
 				fmt.Println("order not placed:", err.Error())
 			}else {
-				fmt.Println("order placed: ", order_id)
+				fmt.Printf("order_id = %s\norder placed for %s, delivery agent %s\n\n", order.ID, order.PacketName, order.AgentName)
 			}
 		}()
 	}

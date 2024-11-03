@@ -48,7 +48,7 @@
     1. Dump data from one shard and load it on another
         1. use mysqldump utility for this
         1. Implement this by iterating over rows to understand how slow and complex the process would be
-1. Implement Distributed Transactions
+1. [Implement Zomato Ordering Service using distributed transactions](./21-zomato-two-phase-commit/)
 
 ## Week-4
 

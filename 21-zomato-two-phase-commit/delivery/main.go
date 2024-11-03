@@ -124,6 +124,7 @@ type BookAgentRequest struct {
 
 type BookAgentResponse struct {
 	AgentID string `json:"agent_id"`
+	AgentName string `json:"agent_name"`
 	OrderID string `json:"order_id"`
 }
 
@@ -166,7 +167,7 @@ func main(){
 			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, BookAgentResponse{AgentID: agent.ID, OrderID: req.OrderID})
+		c.JSON(http.StatusOK, BookAgentResponse{AgentID: agent.ID, AgentName: agent.Name, OrderID: req.OrderID})
 	})
 
 	// Start server
