@@ -51,7 +51,8 @@ func PlaceOrder(foodID int) (*Order, error){
 		return nil, errors.New("could not assign food to the order")
 	}
 	defer resp3.Body.Close()
-	// Parse food name from the book response
+
+	// parse food name from the book response
 	var packetResponse struct {
 		PacketName string `json:"packet_name"`
 	}
@@ -69,7 +70,8 @@ func PlaceOrder(foodID int) (*Order, error){
 		return nil, errors.New("could not assign delivery agent to the order")
 	}
 	defer resp4.Body.Close()
-	// Parse agent name from the book response
+
+	// parse agent name from the book response
 	var agentResponse struct {
 		AgentName string `json:"agent_name"`
 	}
