@@ -4,9 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	// "math/rand"
-	// "strings"
-	// "time"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"

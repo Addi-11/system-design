@@ -41,7 +41,7 @@ func main() {
     // iterate through rows and insert into insta2.posts
     var rowCount int
     for rows.Next() {
-        rowStartTime := time.Now() // Start timing each row
+        rowStartTime := time.Now()
 
         var postID int
         var userID int
@@ -52,19 +52,17 @@ func main() {
             log.Fatal(err)
         }
 
-        // Insert each row into insta2.posts
         _, err = targetDB.Exec("INSERT INTO posts (post_id, user_id, content, created_at) VALUES (?, ?, ?, ?)", postID, userID, content, createdAt)
         if err != nil {
             log.Fatal(err)
         }
 
-        rowDuration := time.Since(rowStartTime) // Calculate row duration
+        rowDuration := time.Since(rowStartTime)
         fmt.Printf("Migrated post ID %d (Row time: %v)\n", postID, rowDuration)
 
         rowCount++
     }
 
-    // Print total migration time
     totalDuration := time.Since(startTime)
     fmt.Printf("\nMigration completed.\nTotal rows migrated: %d\nTotal migration time: %v\n", rowCount, totalDuration)
 }
