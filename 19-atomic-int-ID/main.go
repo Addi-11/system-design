@@ -54,7 +54,7 @@ func main(){
 		
 		go func(machine_id int) {
 			defer wg.Done()
-			// fmt.Println("ID: ", get_id(machine_id))
+			get_id(machine_id)
 
 			if counter%100 == 0{
 				mu.Lock()
