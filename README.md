@@ -37,17 +37,7 @@
 1. Implement Snowflake on
     1. API, and
     1. Database as stored procedure
-1. Implement benchmark pagination approaches
-    1. Limit Offset
-    1. ID Limit
-    1. Implement multiple Logical Shards and Physical Servers
-    1. Create multiple databases - insta1, insta2, etc.
-    1. Create posts, users, profile table with same schem across all
-    1. Alter the schema of one of the table to understand how tedious alter tables would be
-    1. create a new database server (on some other port)
-    1. Dump data from one shard and load it on another
-        1. use mysqldump utility for this
-        1. Implement this by iterating over rows to understand how slow and complex the process would be
+1. [Benchmark Pagination approaches.](./23-benchmark-pagination/)
 1. [Implement Zomato Ordering Service using Distributed Transactions using 2PC](./21-zomato-two-phase-commit/)
 
 ## Week-4
