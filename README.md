@@ -27,7 +27,7 @@
 
 ## Week-3
 1. [Implement a load-balancer](./20-load-balancer/)
-1. Implement a simple blogging application where you shard by user id; and try to provide a unique ID to each blog. The idea is to understand the need to ID generation when database is sharded.
+1. [Implement a simple blogging application where you shard by user id; and try to provide a unique ID to each blog. The idea is to understand the need to ID generation when database is sharded.](./24-blog/)
 1. [Build a simple atomically incrementing integer ID](./19-atomic-int-ID/)
 1. [Implement the "Amazon's Way" of central ID generation service](./22-ID-generation-amazon/)
 1. Implement ths sturcutre of MongoDB Object ID
@@ -42,10 +42,6 @@
 
 ## Week-4
 
-1. Sign-up on Cloudflare, Akamai, or BunnyCDN and explore their features like Origin Configuration, TTL, image Optimization
-1. Configure a website as origin for CDN and see how CDN improves the latency
-1. Pass query paramters to resize and transform the impage served via CDN
-1. Try invlidating a CDN path and measure the time it takes to reflect
 1. Implement a Toy CDN
 1. Implement pre-signed URL based upload on S3
 1. Mimick CDN Failover
@@ -79,3 +75,9 @@
     1. Add one indexes for each column part of the where clause that is queried and measure the time taken
     1. Compute with mentioned composite indexes, and measure the performance
     1. Re-arrange the columns and mesure the performance impact
+
+### Excercises that can be extended:
+1. Zomato Delivery System
+2. Airline Checkin System
+3. Load Balancer
+4. React loading using Server Sent Events
