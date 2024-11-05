@@ -42,7 +42,7 @@
 
 ## Week-4
 
-1. Implement a Toy CDN
+1. [Implement a Toy CDN](./25-toy-cdn/)
 1. Implement pre-signed URL based upload on S3
 1. Mimick CDN Failover
     1. Configure multiple properties on same CDN under different CDN hostnames
