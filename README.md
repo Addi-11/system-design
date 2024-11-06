@@ -42,13 +42,9 @@
 
 ## Week-4
 
-1. [Implement a Toy CDN](./25-toy-cdn/)
+1. [Implement a Toy CDN](./25A-toy-cdn/)
+1. [Mimick CDN Failover - on Toy CDN](./25B-toy-cdn-wid-failover/)
 1. Implement pre-signed URL based upload on S3
-1. Mimick CDN Failover
-    1. Configure multiple properties on same CDN under different CDN hostnames
-    1. Configure same website as origin for it.
-    1. For a given request, confire that 80% go to origin 1 while 20% goes to origin 2
-    1. Do this by creating CDN urls in the backend response
 1. Configure CDN to serve Popular Searches JSON response
 1. Implement JWT based auhthentication
 1. Build GitHub like OG image and server it via CDN
