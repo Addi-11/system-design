@@ -54,7 +54,7 @@
     1. Store blogs object in the user document demonting all blogs that a person wrote.
     1. Store the entire object intead of reference.
     1. Now benchmark and find out how slow the response times gets as we increase the number of elements in the blogs array
-1. Implement Lazy Loading of images on frontend
+1. [Implement Lazy Loading of images on frontend](./26-lazyloading/)
 1. Implement 5 approaches to count post per hashtag
     1. Naive (count++) for every event
     1. Naive batching (batch on server and then write to database)
@@ -73,7 +73,7 @@
     1. Re-arrange the columns and mesure the performance impact
 
 ### Excercises that can be extended:
-1. Zomato Delivery System
-2. Airline Checkin System
-3. Load Balancer
-4. React loading using Server Sent Events
+1. [Zomato Delivery System](./21-zomato-two-phase-commit/)
+2. [Airline Checkin System](./14-airline-checkin-system/)
+3. [Load Balancer](./20-load-balancer/)
+4. [TODO: React loading using Server Sent Events](./10-broker-server-sent-event/)
