@@ -72,6 +72,23 @@
     1. Compute with mentioned composite indexes, and measure the performance
     1. Re-arrange the columns and mesure the performance impact
 
+## Week-5
+1. Implement Consistent Hashing
+1. Implement consistent hashing as a load balancer algorithm
+1. Solve skewness problem in consistent hashing with Virtual Nodes
+1. Implement a simple in-memory single-node cache like Redis as discussed in the session
+1. Implement the word dictionary on local machine
+    1. using CSV format
+    1. using Bitcask format
+1. Partial data write problem by writing 100mb file and killing the process in between
+1. Implement Checksum based
+    1. Identify if data in WAL or Bitcask is corrupt using Checksum
+    1. Implement database recovery as discussed in the session
+1. Implement Bitcask
+    1. Basic KV operations
+    1. Merge and compaction
+1. Benchmark sequential IO vs random IO
+
 ### Excercises that can be extended:
 1. [Zomato Delivery System](./21-zomato-two-phase-commit/)
 2. [Airline Checkin System](./14-airline-checkin-system/)
