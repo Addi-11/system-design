@@ -50,13 +50,25 @@ func (router *Router) handler(w http.ResponseWriter, r *http.Request){
 
 func (router *Router) healthCheckHandler(w http.ResponseWriter, r *http.Request){
 	
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "text/plain")
 
-	for _, backendServer := range(router.config.backendServers){
-		fmt.Printf("Load on origin server %s: %d\n", backendServer.name, backendServer.load) // print in the log
-		fmt.Fprintf(w, "Load on origin server %s: %d\n", backendServer.name, backendServer.load) // print on the html page
+	report := router.generateServerHealthReport()
+
+	fmt.Fprint(w, report)
+	fmt.Print(report)
+}
+
+func (router *Router) generateServerHealthReport() string {
+	report := "SERVER HEALTH REPORT\n\n"
+	for _, backendServer := range router.config.backendServers {
+		report += fmt.Sprintf("Load on origin server %s: %d\n", backendServer.name, backendServer.load)
+		report += "Data stored in server: "
+		for _, data := range backendServer.data {
+			report += fmt.Sprintf("%v, ", data)
+		}
+		report += "\n\n"
 	}
+	return report
 }
 
 // func (router *Router) addServer() *OriginServer{
