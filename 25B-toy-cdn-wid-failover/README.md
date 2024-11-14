@@ -44,7 +44,7 @@ User Request --
 
 #### Output
 
-![alt text](image.png)
+![alt text](../images/cdn-failover.png)
 
 Final Report
 ```
