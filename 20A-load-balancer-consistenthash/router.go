@@ -114,8 +114,22 @@ func (router *Router) addServer(name string, address string){
 	fmt.Printf("Added server %s at position %d\n", newServer.name, newServer.pos)
 }
 
-func (router *Router) removeServer(w http.ResponseWriter, r *http.Request){
+func (router *Router) removeServerHandler(w http.ResponseWriter, r *http.Request){
+	name := r.FormValue("removeServerName")
+	pos := hashFunc(name)
 
+	// index of the server to remove
+	idx := sort.Search(len(router.config.backendServers), func(i int) bool {
+		return router.config.backendServers[i].pos >= pos
+	})
+
+	if idx < len(router.config.backendServers) && router.config.backendServers[idx].pos == pos {
+		// remove the server by excluding it from the list
+		router.config.backendServers = append(router.config.backendServers[:idx], router.config.backendServers[idx+1:]...)
+		fmt.Printf("Removed server %s at position %d\n", name, pos)
+	} else {
+		fmt.Printf("Server %s not found in the hash ring\n", name)
+	}
 }
 
 func (router *Router) startRouter(){
@@ -125,7 +139,7 @@ func (router *Router) startRouter(){
 	mux.HandleFunc("/submit", router.handler) // handle form submission
 	mux.HandleFunc("/health", router.healthCheckHandler)
 	mux.HandleFunc("/addServer", router.addServerHandler)
-	mux.HandleFunc("/removeServer", router.removeServer)
+	mux.HandleFunc("/removeServer", router.removeServerHandler)
 	fmt.Printf("Starting router server at port %s\n", router.address)
 	log.Fatal(http.ListenAndServe(router.address, mux))
 }
