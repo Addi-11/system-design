@@ -10,6 +10,7 @@ type OriginServer struct{
 	name string
 	address string
 	load int
+	pos int // position in the hash space
 	data []interface{} // store key data in the origin server
 }
 

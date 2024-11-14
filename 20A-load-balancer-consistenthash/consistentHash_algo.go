@@ -23,10 +23,10 @@ func getServerConsistentHash(key string, backendServers []*OriginServer) *Origin
 	hash := hashFunc(key)
 
 	// binary search to get idx >= hash
-	idx := sort.Search(len(backendServers), func(i int) bool{return hashFunc(backendServers[i].name) >= hash})
+	idx := sort.Search(len(backendServers), func(i int) bool{return backendServers[i].pos >= hash})
 	if idx == len(backendServers){
 		idx = 0
 	}
-	
+
 	return backendServers[idx]
 }

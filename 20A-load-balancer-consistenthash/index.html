@@ -8,10 +8,34 @@
 <body>
     <h2>Enter Keys</h2>
     <form action="/submit" method="post">
-        <label for="key">Key:</label>
+        <label for="key">Enter Key:</label>
         <input type="text" id="key" name="key" required>
-        <br><br>
-        <input type="submit" value="Submit">
+        <button type="submit">Submit Key</button>
     </form>
+    <br>
+    
+    <!-- Add Server Form -->
+    <form method="POST" action="/addServer">
+        <label for="serverName">Server Name:</label>
+        <input type="text" id="serverName" name="serverName" required>
+        <label for="serverAddress">Server Address:</label>
+        <input type="text" id="serverAddress" name="serverAddress" required>
+        <button type="submit">Add Server</button>
+    </form>
+    <br>
+
+    <!-- Remove Server Form -->
+    <form method="POST" action="/removeServer">
+        <label for="removeServerName">Server to Remove:</label>
+        <input type="text" id="removeServerName" name="removeServerName" required>
+        <button type="submit">Remove Server</button>
+    </form>
+    <br>
+
+    <!-- Health Report -->
+    <form action="/health" method="post">
+        <button>View Health Report</button>
+    </form>
+    <br>
 </body>
 </html>

@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"math/rand"
+	"net/http"
+	"sort"
 )
 
 type RouterConfig struct{
@@ -71,10 +72,6 @@ func (router *Router) generateServerHealthReport() string {
 	return report
 }
 
-// func (router *Router) addServer() *OriginServer{
-
-// }
-
 func (router *Router) getNextServer(key string) *OriginServer{
 	var origin *OriginServer
 
@@ -92,12 +89,43 @@ func (router *Router) getNextServer(key string) *OriginServer{
 	return origin
 }
 
+func (router *Router) addServerHandler(w http.ResponseWriter, r *http.Request){
+	name := r.FormValue("serverName")
+	address := r.FormValue("serverAddress")
+
+	router.addServer(name, address)
+	http.Redirect(w, r, "/health", http.StatusSeeOther)
+}
+
+func (router *Router) addServer(name string, address string){
+	pos := hashFunc(name)
+	newServer := &OriginServer{name: name, address: address, pos: pos}
+
+	// add it to the list of backend servers
+	idx := sort.Search(len(router.config.backendServers), func(i int) bool {
+		return router.config.backendServers[i].pos >= pos
+	})
+
+	backendServers := router.config.backendServers
+	router.config.backendServers = append(backendServers[:idx], append([]*OriginServer{newServer}, backendServers[idx:]...)...)
+
+	// start the new server
+	go newServer.startOriginServer()
+	fmt.Printf("Added server %s at position %d\n", newServer.name, newServer.pos)
+}
+
+func (router *Router) removeServer(w http.ResponseWriter, r *http.Request){
+
+}
+
 func (router *Router) startRouter(){
 	mux := http.NewServeMux()
 	
 	mux.HandleFunc("/", router.formHandler) // serve  the HTML form
 	mux.HandleFunc("/submit", router.handler) // handle form submission
 	mux.HandleFunc("/health", router.healthCheckHandler)
+	mux.HandleFunc("/addServer", router.addServerHandler)
+	mux.HandleFunc("/removeServer", router.removeServer)
 	fmt.Printf("Starting router server at port %s\n", router.address)
 	log.Fatal(http.ListenAndServe(router.address, mux))
 }
