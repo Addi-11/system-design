@@ -21,7 +21,7 @@ Form to enter data
 ![alt text](../images/LB-form.png)
 
 Health Server `:8080/health`
-![alt text](../images/LB-health.png)
+![alt text](../images/lb-health.png)
 
 Adding New Server F, and sending data
 ![alt text](../images/LB-health-add.png)
