@@ -1,5 +1,10 @@
 # Sytem Design Excercises
-
+To run any excercise, go the folder and run: 
+```
+go mod init example.com/main
+go mod tidy
+go run .
+```
 ## Week-1
 1. [Implement a simple connection pool using Bounded Blocking Queue](./05-connection-pool/)
 2. [Implement Database Sharding and Routing (from API server)](./07-sharding/)
@@ -73,8 +78,8 @@
     1. Re-arrange the columns and mesure the performance impact
 
 ## Week-5
-1. Implement Consistent Hashing
-1. Implement consistent hashing as a load balancer algorithm
+1. [Implement Consistent Hashing](./27A-consistent-hashing/)
+1. [Implement consistent hashing as a load balancer algorithm](./20A-load-balancer-consistenthash/)
 1. Solve skewness problem in consistent hashing with Virtual Nodes
 1. Implement a simple in-memory single-node cache like Redis as discussed in the session
 1. Implement the word dictionary on local machine

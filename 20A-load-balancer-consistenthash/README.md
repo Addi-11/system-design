@@ -1,14 +1,18 @@
 ## Load Balancer with Consistent Hashing
 
-have 4 origin servers, have a router server
+1. **Setup:** 4 Origin Servers and 1 load balancer for routing requests to the origin servers.
 
-the router server gets the origin server using 
+2. **Routing Logic:**  Use consistent hashing. Storing servers in the hashspace using their name. We store the keys on the rightmost node.<br>
+[Sample Implementation](../27A-consistent-hashing/)
 
-for now to simulate lets just save data to the origin server
+3. **Data Handling:**
+   - Simulate saving data to the appropriate origin server based on the hashed key.
 
-let's put a form in the router
+4. **HTML Form in Router:** Created a web-based interface to:
+    - Submit keys for routing and saving.
+    - View server health.
+    - Add or remove origin servers dynamically.
 
-adding removing servers, through forms
-routing using consistent hashing
-health monitoring
-data migration
+6. **Health Monitoring:** Display load on each origin server.
+
+7. **Data Migration on Server Removal:** TODO
