@@ -24,7 +24,6 @@ func main(){
 	// starting the origin servers - on different threads
 	for _, origin := range(originServers){
 		router.addServer(origin.name, origin.address) // add origin servers to the router config, in sorted order
-		go origin.startOriginServer()
 	}
 
 	// starting router server	

@@ -91,7 +91,7 @@ func (router *Router) getNextServer(key string) *OriginServer{
 
 func (router *Router) addServerHandler(w http.ResponseWriter, r *http.Request){
 	name := r.FormValue("serverName")
-	address := r.FormValue("serverAddress")
+	address := fmt.Sprintf(":%s", r.FormValue("serverAddress")) //append : to the port address
 
 	router.addServer(name, address)
 	http.Redirect(w, r, "/health", http.StatusSeeOther)
@@ -130,6 +130,8 @@ func (router *Router) removeServerHandler(w http.ResponseWriter, r *http.Request
 	} else {
 		fmt.Printf("Server %s not found in the hash ring\n", name)
 	}
+
+	http.Redirect(w, r, "/health", http.StatusSeeOther)
 }
 
 func (router *Router) startRouter(){

@@ -15,16 +15,18 @@
     <br>
     
     <!-- Add Server Form -->
+    <h2>Add New Server</h2>
     <form method="POST" action="/addServer">
         <label for="serverName">Server Name:</label>
         <input type="text" id="serverName" name="serverName" required>
-        <label for="serverAddress">Server Address:</label>
+        <label for="serverAddress">Server Address Port:</label>
         <input type="text" id="serverAddress" name="serverAddress" required>
         <button type="submit">Add Server</button>
     </form>
     <br>
 
     <!-- Remove Server Form -->
+    <h2>Remove Server</h2>
     <form method="POST" action="/removeServer">
         <label for="removeServerName">Server to Remove:</label>
         <input type="text" id="removeServerName" name="removeServerName" required>
