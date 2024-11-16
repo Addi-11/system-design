@@ -23,10 +23,10 @@ Form to enter data
 Health Server `:8080/health`
 ![alt text](../images/lb-health.png)
 
-Adding New Server F, and sending data
+Adding New Server `F`, and sending data
 ![alt text](../images/LB-health-add.png)
 
-Remove Server A
+Remove Server `A`, and migrate data
 ![alt text](../images/LB-health-remove.png)
 
 Logs

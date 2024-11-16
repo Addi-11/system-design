@@ -122,14 +122,21 @@ func (router *Router) removeServerHandler(w http.ResponseWriter, r *http.Request
 	idx := sort.Search(len(router.config.backendServers), func(i int) bool {
 		return router.config.backendServers[i].pos >= pos
 	})
+	oldServer :=  router.config.backendServers[idx]
 
-	if idx < len(router.config.backendServers) && router.config.backendServers[idx].pos == pos {
-		// remove the server by excluding it from the list
-		router.config.backendServers = append(router.config.backendServers[:idx], router.config.backendServers[idx+1:]...)
-		fmt.Printf("Removed server %s at position %d\n", name, pos)
-	} else {
-		fmt.Printf("Server %s not found in the hash ring\n", name)
-	}
+	// migrate data from the server to the next server
+	nextIdx := (idx + 1) % len(router.config.backendServers)
+	nextServer := router.config.backendServers[nextIdx]
+	nextServer.data = append(nextServer.data, oldServer.data...)
+
+	oldServer.data = nil// clear data of the current idx
+
+	fmt.Printf("Migrating data from %s server to %s server\n", oldServer.name, nextServer.name)
+
+	// remove the server by excluding it from the list
+	router.config.backendServers = append(router.config.backendServers[:idx], router.config.backendServers[idx+1:]...)
+	fmt.Printf("Removed server %s at position %d\n", name, pos)
+
 
 	http.Redirect(w, r, "/health", http.StatusSeeOther)
 }
