@@ -94,6 +94,22 @@ go run .
     1. Merge and compaction
 1. Benchmark sequential IO vs random IO
 
+## Week-6
+1. Implement LSM Trees
+1. Implement B+ Trees
+1. LSM Tree Based Key-Value Store. [Reference](http://daslab.seas.harvard.edu/classes/cs265/project.html)
+1. Implement Bloom Filters and measure
+1. False Positive Rate vs Size of the filter
+1. False Positive Rate vs Number of Hash Function
+1. Implement Deletable Bloom Filters
+1. Setup HLS Streaming following Akamai’s Documentation
+1. Implement HLS Streaming Server in Golang
+1. Video Streaming Server in Go. [Reference](https://medium.com/bootdotdev/create-a-golang-video-streaming-server-using-hls-a-tutorial-f8c7d4545a0f)
+1. Implement a TCP server that accepts 1GB file
+1. Transfer the file via one POST request
+1. Stream the file from client to server from scratch
+1. Implement GFS
+
 ### Excercises that can be extended:
 1. [Zomato Delivery System](./21-zomato-two-phase-commit/)
 2. [Airline Checkin System](./14-airline-checkin-system/)
