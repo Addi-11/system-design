@@ -95,7 +95,7 @@ func wordLookup(word string) string {
 		fmt.Printf("Error: Malformed line at offset %d\n", index)
 		return ""
 	}
-	fmt.Printf("%s : %s\nTime taken: %s\n\n", content[0], content[1], time.Since(start))
+	fmt.Printf("%s : %s\nTime taken: %s\n", content[0], content[1], time.Since(start))
 
 	return content[1]
 }
@@ -146,61 +146,62 @@ func merge() {
 	// use pointers to merge
 	for dictWord != "" || chglogWord != "" {
 		if chglogWord == "" || (dictWord != "" && strings.Compare(dictWord, chglogWord) < 0) {
-			dict.Seek(dictOffset, 0)
-			dictLine, _ := bufio.NewReader(dict).ReadString('\n')
+			writeDictionaryEntry(dict, newDict, newIndex, dictWord, dictOffset, &offset)
 
-			newDict.WriteString(dictLine)
-			newIndex.WriteString(fmt.Sprintf("%s %d\n", dictWord, offset))
-			offset += int64(len(dictLine))
 
 			// move dictoffset pointer
 			if idxScanner.Scan() {
-				dictParts := strings.Split(idxScanner.Text(), " ")
-				dictWord = dictParts[0]
-				dictOffset, _ = strconv.ParseInt(dictParts[1], 10, 64)
+				dictWord, dictOffset = parseIndexEntry(idxScanner.Text())
 			} else {
 				dictWord = ""
 			}
-		} else if dictWord == "" || strings.Compare(chglogWord, dictWord) < 0 {
-			newDict.WriteString(fmt.Sprintf("%s,%s\n", chglogWord, chglogMeaning))
-			newIndex.WriteString(fmt.Sprintf("%s %d\n", chglogWord, offset))
-			offset += int64(len(chglogWord) + len(chglogMeaning) + 1) + int64(len("\n"))
-
-			// move changelog pointer
-			if chglogScanner.Scan() {
-				chglogParts := strings.Split(chglogScanner.Text(), ",")
-				chglogWord = chglogParts[0]
-				chglogMeaning = chglogParts[1]
-			} else {
-				chglogWord = ""
+		} else if dictWord == "" || strings.Compare(chglogWord, dictWord) <= 0 {
+			if strings.Compare(chglogWord, dictWord) == 0{
+				// move dictoffset pointer
+				if idxScanner.Scan() {
+					dictWord, dictOffset = parseIndexEntry(idxScanner.Text())
+				} else {
+					dictWord = ""
+				}
 			}
 			
-		} else if strings.Compare(chglogWord, dictWord) == 0{
-			// move dictoffset pointer
-			if idxScanner.Scan() {
-				dictParts := strings.Split(idxScanner.Text(), " ")
-				dictWord = dictParts[0]
-				dictOffset, _ = strconv.ParseInt(dictParts[1], 10, 64)
-			} else {
-				dictWord = ""
-			}
-
-			newDict.WriteString(fmt.Sprintf("%s,%s\n", chglogWord, chglogMeaning))
-			newIndex.WriteString(fmt.Sprintf("%s %d\n", chglogWord, offset))
-			offset += int64(len(chglogWord) + len(chglogMeaning) + 1) + int64(len("\n"))
-
+			writeChangelogEntry(newDict, newIndex, chglogWord, chglogMeaning, &offset)
 			// move changelog pointer
 			if chglogScanner.Scan() {
-				chglogParts := strings.Split(chglogScanner.Text(), ",")
-				chglogWord = chglogParts[0]
-				chglogMeaning = chglogParts[1]
+				chglogWord, chglogMeaning = parseChangelogEntry(chglogScanner.Text())
 			} else {
 				chglogWord = ""
-			}
+			}	
 		}
 	}
 
 	fmt.Println("Merge completed: New dictionary and index created.")
+}
+
+func writeDictionaryEntry(dict *os.File, newDict, newIndex *os.File, word string, dictOffset int64, offset *int64) {
+	dict.Seek(dictOffset, 0)
+	line, _ := bufio.NewReader(dict).ReadString('\n')
+	newDict.WriteString(line)
+	newIndex.WriteString(fmt.Sprintf("%s %d\n", word, *offset))
+	*offset += int64(len(line))
+}
+
+func writeChangelogEntry(newDict, newIndex *os.File, word, meaning string, offset *int64) {
+	line := fmt.Sprintf("%s,%s\n", word, meaning)
+	newDict.WriteString(line)
+	newIndex.WriteString(fmt.Sprintf("%s %d\n", word, *offset))
+	*offset += int64(len(line))
+}
+
+func parseIndexEntry(entry string) (string, int64) {
+	parts := strings.Split(entry, " ")
+	offset, _ := strconv.ParseInt(parts[1], 10, 64)
+	return parts[0], offset
+}
+
+func parseChangelogEntry(entry string) (string, string) {
+	parts := strings.Split(entry, ",")
+	return parts[0], parts[1]
 }
 
 func addWordToChangelog(word, meaning string) {
