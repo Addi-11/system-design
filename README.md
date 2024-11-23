@@ -83,7 +83,7 @@ go run .
 1. Solve skewness problem in consistent hashing with Virtual Nodes
 1. Implement a simple in-memory single-node cache like Redis as discussed in the session
 1. Implement the word dictionary on local machine
-    1. using CSV format
+    1. [using CSV format](./28-word-dictionary/)
     1. using Bitcask format
 1. Partial data write problem by writing 100mb file and killing the process in between
 1. Implement Checksum based
