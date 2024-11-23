@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -21,7 +20,7 @@ const (
 
 func logError(msg string, err error) {
 	if err != nil {
-		log.Fatal(msg, err)
+		log.Fatalf("%s: %v", msg, err)
 	}
 }
 
@@ -162,7 +161,30 @@ func merge() {
 			} else {
 				dictWord = ""
 			}
-		} else if dictWord == "" || strings.Compare(chglogWord, dictWord) <= 0 { // = in case the word exists in both
+		} else if dictWord == "" || strings.Compare(chglogWord, dictWord) < 0 {
+			newDict.WriteString(fmt.Sprintf("%s,%s\n", chglogWord, chglogMeaning))
+			newIndex.WriteString(fmt.Sprintf("%s %d\n", chglogWord, offset))
+			offset += int64(len(chglogWord) + len(chglogMeaning) + 1) + int64(len("\n"))
+
+			// move changelog pointer
+			if chglogScanner.Scan() {
+				chglogParts := strings.Split(chglogScanner.Text(), ",")
+				chglogWord = chglogParts[0]
+				chglogMeaning = chglogParts[1]
+			} else {
+				chglogWord = ""
+			}
+			
+		} else if strings.Compare(chglogWord, dictWord) == 0{
+			// move dictoffset pointer
+			if idxScanner.Scan() {
+				dictParts := strings.Split(idxScanner.Text(), " ")
+				dictWord = dictParts[0]
+				dictOffset, _ = strconv.ParseInt(dictParts[1], 10, 64)
+			} else {
+				dictWord = ""
+			}
+
 			newDict.WriteString(fmt.Sprintf("%s,%s\n", chglogWord, chglogMeaning))
 			newIndex.WriteString(fmt.Sprintf("%s %d\n", chglogWord, offset))
 			offset += int64(len(chglogWord) + len(chglogMeaning) + 1) + int64(len("\n"))
@@ -204,6 +226,7 @@ func addWord(word, meaning string) {
 
 func main() {
 	createNewIndex()
+
 	wordLookup("Apple")
 	wordLookup("Dog")
 
