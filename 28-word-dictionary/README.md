@@ -1,19 +1,28 @@
 ##  Implementing Word Dictionary without DB
 
-add_word // adds and updates the word if exist
-keep a text file // dictionary.csv
-keep an index file // index file dictionary.dat
+- `wordLookUp()` : uses the `index.dat` file to search the offset of the word in the dictionary, in time O(1).
+- `addWord()` : to add or update new words in the dictionary. Changelog is maintained in sorted order. New dictionary is created by merging the old dictionary and change log (MergeSort)
 
-we merge these 2 files - when we merge we add a header (approach 3)
+- **TODO:** Merge the 2 files - dictionary and index, to make the files poratable. Add a header to store the metadata. (approach 3)<br>
+- **TODO:** Create a write ahead log (WAL) before the merging the change log, incase the system crashes.
 
-create a write ahead log before the merge
+Initial Dictionary
+![alt text](../images/28-dict-before.png)
 
-get_word // note the time taken to get
+Dictionary after merge
+![alt text](../images/28-dict-after.png)
 
+Index `.dat` File
+![alt text](../images/28-index.png)
 
+ChangeLog
+![alt text](../images/28-changelog.png)
+
+Logs
+![alt text](../images/28-logs.png)
 ### Theory
 
-#### Requirements
+#### System Requirements - READ HEAVY
 - Weekly updates to words and meanings.
 - Singular lookups.
 - Handle 170,000 words with a total size of 1 TB.
@@ -33,7 +42,7 @@ get_word // note the time taken to get
 - **Index File Size**: `171,476 x (average word length + separator + newline) ≈ 2.6 MB`.
 - **Lookup**: Use the index file to locate the position of a word in the CSV file for fast retrieval.
 - **Updating the Dictionary**
-    1. Maintain a **changelog** for updates.
+    1. Maintain a sorted **changelog** for updates.
     2. Download the dictionary and merge it with the changelog (sorted merge `O(n)`).
     3. Generate new data and index files, then upload them to S3.
     4. Update metadata (`meta.json`) with version info.
