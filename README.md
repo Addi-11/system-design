@@ -83,7 +83,7 @@ go run .
 1. Solve skewness problem in consistent hashing with Virtual Nodes
 1. Implement a simple in-memory single-node cache like Redis as discussed in the session
 1. Implement the word dictionary on local machine
-    1. [using CSV format](./28-word-dictionary/)
+    1. [using CSV format](./28-word-dictionary-csv/)
     1. using Bitcask format
 1. Partial data write problem by writing 100mb file and killing the process in between
 1. Implement Checksum based
@@ -102,7 +102,7 @@ go run .
 1. Implement Deletable Bloom Filters
 1. Setup HLS Streaming following Akamai’s Documentation
 1. Implement HLS Streaming Server in Golang
-1. Video Streaming Server in Go. [Reference](https://medium.com/bootdotdev/create-a-golang-video-streaming-server-using-hls-a-tutorial-f8c7d4545a0f)
+1. [Video Streaming Server in Go](./30-hls-video-stream/)
 1. Implement a TCP server that accepts 1GB file
 1. Transfer the file via one POST request
 1. Stream the file from client to server from scratch
