@@ -10,6 +10,7 @@ import (
 
 var mHash hash.Hash32
 
+
 func init(){
 	seed := 11
 	mHash = murmur3.New32WithSeed(uint32(seed))
@@ -45,28 +46,35 @@ func (b *BloomFilter) Exists(key string) bool{
 	idx := murmurhash(key, b.size)
 	aIdx := idx/8
 	bIdx := idx%8	
-	return (b.filter[aIdx] & (1 << bIdx)) > 0
+	return b.filter[aIdx] & (1 << bIdx) > 0
 }
 
 func main(){
-	bloom := NewBloomFilter(100000)
+
+	sizes := []int32{16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144}
 
 	dataset := make([]string, 0)
-	for i := 0; i<1000; i++{
+	for i := 0; i<5000; i++{
 		u := uuid.New()
 		dataset = append(dataset, u.String())
 	}
 
-	for i:=0; i<500; i++{
-		bloom.Add(dataset[i])
-	}
+	for _, size := range(sizes){
+		bloom := NewBloomFilter(size)
+		j, diff := 2000, 1000
 
-	falsePositive := 0
-	for i:=500; i<1000; i++{
-		if bloom.Exists(dataset[i]){
-			falsePositive++;
+		// Adding values to the filters
+		for i:=0; i<j; i++{
+			bloom.Add(dataset[i])
 		}
+
+		// checking for values not in dataset
+		falsePositive := 0
+		for i:=j; i < j+diff; i++{
+			if bloom.Exists(dataset[i]){
+				falsePositive++;
+			}
+		}
+		fmt.Printf("False Positive Rate: %f, Filter Size: %d\n", float64(falsePositive)/ float64(diff), size)
 	}
-	fmt.Println(falsePositive)
-	fmt.Println("False Positive Rate:", 100 * (float64(falsePositive)/ float64(len(dataset))))
 }
