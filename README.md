@@ -101,8 +101,7 @@ go run .
 1. [Implement Bloom Filters and measure: FPR vs Size Vs Num of Hash Func](./29-bloom-filters/)
 1. Implement Deletable Bloom Filters
 1. Setup HLS Streaming following Akamai’s Documentation
-1. Implement HLS Streaming Server in Golang
-1. [Video Streaming Server in Go](./30-hls-video-stream/)
+1. [Video HLS Streaming Server in Go](./30-hls-video-stream/)
 1. Implement a TCP server that accepts 1GB file
 1. Transfer the file via one POST request
 1. Stream the file from client to server from scratch
