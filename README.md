@@ -107,6 +107,42 @@ go run .
 1. Stream the file from client to server from scratch
 1. Implement GFS
 
+
+## Week-7
+1. Implement recent search as discussed during the session
+1. Capture search logs and make them queryable
+    1. From an HTTP request, extract all possible meta info
+    1. Ingest them in ES
+    1. Plot different graphs, segmenations, and gain insights using Kibana
+1. Implement Full Text Search on your phone contacts
+    1. implement fuzzy searching
+    1. implement spell correction
+    1. implement synonymic query expansion
+    1. add support for phonetic search
+1. Cache API responses on Akamai for very short duration
+    1. Option 1: Set TTL on Akamai Console
+    1. Option 2: Drive TTL using response headers from the origin
+1. Stream some dummy logs from local machine to S3
+    1. Query them using Athena
+1. Implement Task Scheduler as discussed in the session
+    1. Fixed Time Execution and Cron Schedule
+    1. Implement Job Puller
+    1. Make Jobs Puller Fault Tolerant
+    1. For your machine, compute Unit Tech Economics for Job Puller
+    1. Define a format that allows user to specify any task
+    1. Build capability to run it - Docker Images a simple solution but overskill for simple tasks
+    1. Induce failures in your scheduler and set up alerts if you breach SLA
+1. Implement Team Relabance feature in Task scheduler
+    1. Do it for Fault Tolerance
+    1. Do it if you want to auto scale
+1. Implement Brokers in all 3 flavours
+    1. SQS like broker using MySQL as backend
+    1. Kafka like broker using MySQL as backend
+    1. SQS like broker using Bitcask as backend
+1. Create an account on Razorpay and build simple payment system using their API
+    1. use their “Test Mode”
+    1. use Webhooks to receive Payment Notifications
+
 ### Excercises that can be extended:
 1. [Zomato Delivery System](./21-zomato-two-phase-commit/)
 2. [Airline Checkin System](./14-airline-checkin-system/)
