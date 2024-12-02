@@ -14,12 +14,13 @@ B C
 gfs master functions:
 - has metadata on which chunk servers does the data exsist
 - assign unique id to chunk
-- send heartbeat to chunk to monitor health.
+- send heartbeat to chunkserver to monitor health.
     - maintains replication factor of 2. (Wont do this now. - but keep code extensible)
 
 - identify chunk servers (primary + replica) with data, and send their address.
 
 gfs client functions:
+- stores file to chunk mapping
 - turn's user request to chunk and offset
 - goes to chunk ip address to recieve data, 
     - if data not here goes to next chunk
