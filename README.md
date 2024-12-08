@@ -60,13 +60,7 @@ go run .
     1. Store the entire object intead of reference.
     1. Now benchmark and find out how slow the response times gets as we increase the number of elements in the blogs array
 1. [Implement Lazy Loading of images on frontend](./26-lazyloading/)
-1. Implement 5 approaches to count post per hashtag
-    1. Naive (count++) for every event
-    1. Naive batching (batch on server and then write to database)
-    1. Efficient batching with minimizing stop-the-world usng deep-copy
-    1. Efficient batching with minimizing stop-the-world using two-maps
-    1. Kafka adapter pattern to re-ingest the post hashtags partitioned by hashtag
-        1. Measure the number of writes on the database in each of the above approaches
+1. [Implement 5 approaches to count post per hashtag & STOP THE WORLD](./32-count-posthashtag/)
 1. Populate on_msg_event while using websocket.
     1. Try to identify when the connection breaks and use that opportunity to write event to Kafka
 1. Configure Redis in cluster mode and figure out how data is distrubuted
