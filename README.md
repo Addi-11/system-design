@@ -38,7 +38,7 @@ go run .
 1. Implement ths sturcutre of MongoDB Object ID
 1. [Benchmark the impact of UUID on relational database as Primary Key](./18-benchmark-primarykey/)
 1. [Benchmark MySQL's UPSERT using `ON DUPLICATE KEY UPDATE` and `REPLACE INTO`](./17-benchmark-mysql-upsert/)
-1. Implement Flickr's Odd-Even based ID generation
+1. [Implement Flickr's Odd-Even based ID generation](./31-ID-flickr-odd-even/)
 1. Implement Snowflake on
     1. API, and
     1. Database as stored procedure
