@@ -143,6 +143,19 @@ go run .
     1. use their “Test Mode”
     1. use Webhooks to receive Payment Notifications
 
+## Week-8
+1. Implement GeoHash
+1. Implement Zoom-in and Zoom-out using Trie based approach
+1. Evaluate the difference between EVAL and EVAL_RO command
+    1. Fire EVAL command on Replica and observe the output
+    1. Fire EVAL command on Replica using Redis SDK and observe
+1. Write Lua script and mimic matching algorithm
+    1. use factors like - vehicle type, rating, etc.
+1. Implement cursor based pagination on MySQL
+1. Benchmark ingestion throughput when using
+    1. Auto-inc as Primary key
+    1. UUID as primary key
+
 ### Excercises that can be extended:
 1. [Zomato Delivery System](./21-zomato-two-phase-commit/)
 2. [Airline Checkin System](./14-airline-checkin-system/)
