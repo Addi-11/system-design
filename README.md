@@ -1,5 +1,5 @@
 # Sytem Design Excercises
-To run any excercise, go the folder and run: 
+To run any excercise, go the folder and run the following, Additional details added in the excercise folder: 
 ```
 go mod init example.com/main
 go mod tidy
@@ -80,9 +80,7 @@ go run .
     1. [using CSV format](./28-word-dictionary-csv/)
     1. using Bitcask format
 1. Partial data write problem by writing 100mb file and killing the process in between
-1. Implement Checksum based
-    1. Identify if data in WAL or Bitcask is corrupt using Checksum
-    1. Implement database recovery as discussed in the session
+1. [Implement Checksum based WAL or bitcast, with DB recovery](./33-checksum/)
 1. Implement Bitcask
     1. Basic KV operations
     1. Merge and compaction
@@ -155,3 +153,4 @@ go run .
 2. [Airline Checkin System](./14-airline-checkin-system/)
 3. [Load Balancer](./20-load-balancer/)
 4. [TODO: React loading using Server Sent Events](./10-broker-server-sent-event/)
+5. GFS
