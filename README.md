@@ -35,7 +35,7 @@ go run .
 1. [Implement a simple blogging application where you shard by user id; and try to provide a unique ID to each blog. The idea is to understand the need to ID generation when database is sharded.](./24-blog/)
 1. [Build a simple atomically incrementing integer ID](./19-atomic-int-ID/)
 1. [Implement the "Amazon's Way" of central ID generation service](./22-ID-generation-amazon/)
-1. Implement ths sturcutre of MongoDB Object ID
+1. [Implement ths sturcutre of MongoDB Object ID](./35-MongoDB-objectID/)
 1. [Benchmark the impact of UUID on relational database as Primary Key](./18-benchmark-primarykey/)
 1. [Benchmark MySQL's UPSERT using `ON DUPLICATE KEY UPDATE` and `REPLACE INTO`](./17-benchmark-mysql-upsert/)
 1. [Implement Flickr's Odd-Even based ID generation](./31-ID-flickr-odd-even/)
