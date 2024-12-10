@@ -21,7 +21,7 @@ go run .
  
 ## Week-2
 1. [Implement Airline Check-in System](./14-airline-checkin-system/)
-1. Hit deadlock in database by cn top of MySQL.
+1. [Deadlock simulation](./34-deadlock/)
 1. [Implement a toy KV store on top of MySQL](./15A-kvstore-mysql/)
 1. [Implement simple sharding with a hash or range based routing strategy in above KV store](./15B-kvstore-hash-mysql/)
 1. Implement flag driven consistent reads.
