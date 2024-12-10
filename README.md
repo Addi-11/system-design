@@ -80,7 +80,8 @@ go run .
     1. [using CSV format](./28-word-dictionary-csv/)
     1. using Bitcask format
 1. Partial data write problem by writing 100mb file and killing the process in between
-1. [Implement Checksum based WAL or bitcast, with DB recovery](./33-checksum/)
+1. [Implement Checksum based WAL or bitcast](./33-checksum/)
+1. Implement Checksum with DB recovery, as discussed in session.
 1. Implement Bitcask
     1. Basic KV operations
     1. Merge and compaction
