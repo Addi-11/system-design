@@ -8,7 +8,11 @@ An **LSM (Log-Structured Merge) Tree** is a type of key-value store architecture
 
 ---
 
-#### Working Details
+### Working Details
+
+![alt text](../images/lsm-kv-store.png)
+
+**Code Optimization TODO**: For range queries and Compaction can be using MIN HEAPS for sort.
 
 1. **MemTable (In-Memory Storage):**
    - All writes (`put`, `delete`) are first written to an in-memory data structure, called the MemTable.
@@ -25,10 +29,11 @@ An **LSM (Log-Structured Merge) Tree** is a type of key-value store architecture
 
 4. **Reads (MemTable + SSTables):**
    - For `get` operations, the MemTable is checked first since it holds the most recent data.
-   - If the key is not found, older SSTables are searched in reverse order of creation (newer data is checked first).
+   - If the key is not found, older SSTables are searched in `reverse order` of creation (newer data is checked first).
 
 5. **Range Queries:**
-   - Range queries scan across all SSTables and the MemTable, aggregating matching key-value pairs within the specified range.
+   - Range queries scan across all SSTables and the MemTable, in `ascending order`, overwriting older values with new ones, aggregating matching key-value pairs within the specified range.
+
 
 ---
 

@@ -10,10 +10,13 @@ class MemTable:
         self.table[key] = value
 
     def get(self, key):
-        return self.table.get(key)
+        if key in self.table:
+            return self.table.get(key)
+        else:
+            return "KEY NOT FOUND" # Value of dlted key can be None, so need this
     
     def delete(self, key):
-        self.table[key] = "/dlt" # need to have some esp. dlt marker
+        self.table[key] = None
 
     def flush(self):
         sorted_items = sorted(self.table.items())
@@ -44,6 +47,11 @@ class LSMTree:
         self.memtable_threshold = memtable_threshold
         self.data_dir = data_dir
         self.sstables = []
+        # counter for compacted files - can't give old overwriting names 'cause of dlt
+        self.counter = 0
+
+        if not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
 
     def put(self, key, value):
         self.memtable.put(key, value)
@@ -52,9 +60,7 @@ class LSMTree:
 
     def get(self, key):
         value = self.memtable.get(key)
-        if value == "/dlt":
-            return None
-        if value is not None:
+        if value != "KEY NOT FOUND":
             return value
         for sstable in reversed(self.sstables):
             data = sstable.read()
@@ -67,31 +73,36 @@ class LSMTree:
         self.memtable.delete(key)
 
     def range_query(self, st, end):
-        memtable_data = [
-            (k, v) for k,v in self.memtable.table.items()
-            if st <= k <= end and v != "/dlt"
-        ]
 
         sstable_data = []
-
         for sstable in self.sstables:
             sstable_data.extend(sstable.range_query(st, end))
 
-        # merge results - new entries first
+        # merging the sstables data
         merged_data = {}
-        for k, v in sstable_data:
-            if k not in merged_data and v != "/dlt":
-                merged_data[k] = v
-
-        for k, v in memtable_data:
-            if v != "/dlt":
-                merged_data[k] = v
+        for key, value in sstable_data:
+            if value is None:
+                del merged_data[key]
+                continue
+            merged_data[key] = value
+        
+        # Overwrite with latest memtable data
+        for key, value in self.memtable.table.items():
+            if st <= key <= end:
+                if value is None:
+                    del merged_data[key]
+                    continue
+                merged_data[key] = value
 
         return sorted(merged_data.items())
 
+        
     def _flush_memtable(self):
         flushed_data = self.memtable.flush()
         self._create_sstable(flushed_data)
+        # perform compaction if sstables > 2
+        if len(self.sstables) > 2:
+            self._compaction()
 
     def _create_sstable(self, data):
         file_path = os.path.join(self.data_dir, f'sstable_{len(self.sstables)}.sst')
@@ -99,9 +110,36 @@ class LSMTree:
         sstable.write(data)
         self.sstables.append(sstable)
 
+    def _compaction(self):
+        print("\nCompaction started......Merging all SSTables")
+        all_data = []
+
+        for sstable in self.sstables:
+            all_data.extend(sstable.read())
+
+        merged_data = {}
+        for key, value in all_data:
+            if value is None:
+                del merged_data[key]
+                continue
+            merged_data[key] = value
+        
+        sorted_merged_data = sorted(merged_data.items())
+
+        compact_file_path =  os.path.join(self.data_dir, f'sstable_compacted_{self.counter}.sst')
+        compact_sstable = SSTable(compact_file_path)
+        compact_sstable.write(sorted_merged_data)
+        self.counter += 1
+
+        # Remove old SSTables and keep the compacted one
+        for sstable in self.sstables:
+            os.remove(sstable.file_path)
+        self.sstables = [compact_sstable]
+
+
 
 if __name__ == "__main__":
-    lsm_tree = LSMTree(memtable_threshold=4)
+    lsm_tree = LSMTree(memtable_threshold=3)
 
     # put values
     lsm_tree.put("chips", "lays, kurkure")
@@ -111,23 +149,32 @@ if __name__ == "__main__":
     lsm_tree.put("furniture", "chair table")
     lsm_tree.put("trees", "green leafy tall beings")
 
-    # check deletion and updation
-    print(lsm_tree.get("clothes"))
-    print(lsm_tree.get("banana"))
-    lsm_tree.put("clothes", "skirt, shorts")
-    lsm_tree.delete("banana")
-    print(lsm_tree.get("clothes"))
-    print(lsm_tree.get("banana"))
+    # get values
+    print("KEY: clothes, VALUE:", lsm_tree.get("clothes"))
+    print("KEY: banana, VALUE:",lsm_tree.get("banana"))
 
-    # mote put values
+    # update values
+    lsm_tree.put("clothes", "skirt, shorts")
+
+    # delete values
+    lsm_tree.delete("banana")
+
+    print("KEY: clothes, VALUE:",lsm_tree.get("clothes"))
+    print("KEY: banana, VALUE:",lsm_tree.get("banana"))
+
+    lsm_tree.delete("clothes")
+
+    # put values
     lsm_tree.put("zebra", "black and white animal")
     lsm_tree.put("chocolate", "sweet cocoa")
     lsm_tree.put("apple", "red fruit, which is sometimes green")
     lsm_tree.put("jackets", "cold protection")
     lsm_tree.put("guitars", "music to ears")
+    
     # updates values
     lsm_tree.put("animals", "four legs creatures")
     lsm_tree.put("furniture", "TV cabinets")
 
 
-    print(lsm_tree.range_query("animals", "zebra"))
+    print("\nRANGE QUERY:\n", lsm_tree.range_query("animals", "zebra"))
+    print("\nRANGE QUERY:\n", lsm_tree.range_query("chocolate", "zebra"))
