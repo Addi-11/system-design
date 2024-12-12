@@ -88,9 +88,8 @@ go run .
 1. Benchmark sequential IO vs random IO
 
 ## Week-6
-1. Implement LSM Trees
 1. Implement B+ Trees
-1. LSM Tree Based Key-Value Store. [Reference](http://daslab.seas.harvard.edu/classes/cs265/project.html)
+1. [LSM Tree Based Key-Value Store.](./36-LSM-KVStore/)
 1. [Implement Bloom Filters and measure: FPR vs Size Vs Num of Hash Func](./29-bloom-filters/)
 1. Implement Deletable Bloom Filters
 1. Setup HLS Streaming following Akamai’s Documentation

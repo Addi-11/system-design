@@ -7,3 +7,4 @@
 *.ts
 *.m3u8
 *wal.log
+*sstable_*
